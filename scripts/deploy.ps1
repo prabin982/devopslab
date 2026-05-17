@@ -25,7 +25,7 @@ $appUp = $false
 while (-not $appUp -and $count -lt $maxRetries) {
     try {
         $response = Invoke-WebRequest -Uri "http://localhost:5000/api/health" -Method Get -ErrorAction SilentlyContinue
-        if ($response.StatusCode -eq 200) { $appUp = $true }
+        if ($response -and $response.StatusCode -eq 200) { $appUp = $true }
     } catch {
         $count++
         Write-Host "." -NoNewline
@@ -45,7 +45,7 @@ $esUp = $false
 while (-not $esUp) {
     try {
         $response = Invoke-WebRequest -Uri "http://localhost:9200" -Method Get -ErrorAction SilentlyContinue
-        if ($response.StatusCode -eq 200) { $esUp = $true }
+        if ($response -and $response.StatusCode -eq 200) { $esUp = $true }
     } catch {
         Write-Host "." -NoNewline
         Start-Sleep -Seconds 5
